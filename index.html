@@ -158,11 +158,14 @@
           stroke(noise(frameCount*0.001+i)*150+100, cos(frameCount*0.005*i)*100+50, sin(frameCount*0.002*i)*100+100);
           line(0, i, width, i);
         }
+        for (let i = 0; i < height; i++){
+
+        }
         push();
         noFill();
         stroke(255);
-        strokeWeight(width*0.4);
-        circle(width/2, height/2, width*0.75);
+        strokeWeight(1000);
+        circle(width/2, height/2, width);
         pop();
       }
     }
