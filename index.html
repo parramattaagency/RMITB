@@ -108,7 +108,7 @@
     let counter = 0;
 
     function setup() {
-      let canvas = createCanvas(windowWidth, windowHeight);
+      let canvas = createCanvas(windowWidth - 10, windowHeight - 10);
       canvas.id('canvas-container');
       canvas.style('display', 'block');
       canvas.style('margin', 'auto');
@@ -128,7 +128,7 @@
 
     function draw() {
       //background(220, 100, 50);
-      image(img, 0, 0, 600, 600)
+      image(img, 0, 0, windowWidth - 10, windowHeight - 10)
 
       if (isRunning) {
         for (let i = 0; i < steppers.length; i++) {
