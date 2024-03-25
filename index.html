@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remix Me In The Bathroom</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- p5.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <!-- Tone.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <style>
+  @font-face { font-family: BasierSquareMono-Regular; src: url('fonts/BasierSquareMono-Regular.otf'); }
+  @font-face { font-family: TAYBirdie; src: url('fonts/TAYBirdie.otf'); }
+  /* CSS for positioning canvas */
+  #canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically as well */
+    height: 100%; /* Ensure the container takes full height */
+
+  }
+
+  /* Ensure the parent container takes full height */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: TAYBirdie;
+  }
+
+  /* Ensure the container containing canvas takes full height */
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5%;
+  }
+
+#mybutton{
+  margin-bottom: 2.5%;
+}
+
+</style>
+
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Remix Me In The Bathroom</h1>
+    <div class="text-center mt-3">
+      <button onclick="startActivity()" id="mybutton" class="btn btn-primary mr-2">Start</button>
+      <button onclick="stopActivity()" id="mybutton" class="btn btn-danger">Stop</button>
+    </div>
+    <div id="canvas-container">
+      <!-- Canvas will be created here -->
+    </div>
+  </div>
+
+  <script>
+    let isRunning = false;
+
+    function startActivity() {
+      isRunning = true;
+    }
+
+    function stopActivity() {
+      isRunning = false;
+      for (let i = 0; i < steppers.length; i++) {
+        steppers[i].oo = 0;
+        steppers[i].ooc = 255;
+      }
+    }
+
+    class Stepper {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.ooc = 255;
+        this.oo = 0;
+        this.act = color(0, 50);
+      }
+
+      show() {
+        stroke(this.act);
+        fill(this.ooc)
+        rect(this.x, this.y, width / 16, height / 8);
+      }
+
+      clicked() {
+        if (dist(mouseX, mouseY, this.x + width / 32, this.y + width / 32) < width / 32 & this.oo == 0) {
+          this.ooc = color(255, 100, 0);
+          this.oo = 1;
+        } else if (dist(mouseX, mouseY, this.x + width / 32, this.y + width / 32) < width / 32 & this.oo == 1) {
+          this.ooc = 255;
+          this.oo = 0;
+        }
+      }
+    }
+
+
+    let img;
+    let steppers = [];
+    let samps = [];
+    let notes = ["C4", "D#5", "A#5", "G4",
+      "C3", "F5", "G3", "D4"
+    ];
+    let counter = 0;
+
+    function setup() {
+      let canvas = createCanvas(600, 600);
+      canvas.id('canvas-container');
+      canvas.style('display', 'block');
+      canvas.style('margin', 'auto');
+      canvas.parent('canvas-container');
+
+      img = loadImage('HH_MM.jpg');
+
+      stroke(0, 50);
+
+      for (let y = 0; y < 8; y++) {
+        samps[y] = new Howl({ src: [`sample_${y}.mp3`] });
+        for (let x = 0; x < 16; x++) {
+          steppers.push(new Stepper(x * (width / 16), y * (height / 8)));
+        }
+      }
+    }
+
+    function draw() {
+      //background(220, 100, 50);
+      image(img, 0, 0, 600, 600)
+
+      if (isRunning) {
+        for (let i = 0; i < steppers.length; i++) {
+          steppers[i].show();
+        }
+
+        if (frameCount % 7 == 0) {
+          //playhead color
+
+          for (let y = 0; y < 8; y++) {
+            if (counter > 0) {
+              steppers[(counter - 1) + y * 16].act = color(0, 50);
+            } else if (counter == 0) {
+              steppers[15 + y * 16].act = color(0, 50);
+            }
+
+            steppers[counter + y * 16].act = color(0);
+
+            if (steppers[counter + y * 16].oo == 1) {
+              samps[y].play();
+            }
+          }
+
+          counter += 1;
+          if (counter > 15) {
+            counter = 0;
+          }
+        }
+      }
+    }
+
+    function mousePressed() {
+      for (let i = 0; i < steppers.length; i++) {
+        steppers[i].clicked();
+      }
+    }
+  </script>
+</body>
+</html>
