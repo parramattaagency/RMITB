@@ -34,7 +34,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 5%;
+    margin-bottom: 10%;
   }
 
 #mybutton{
@@ -102,19 +102,16 @@
     let img;
     let steppers = [];
     let samps = [];
-    let notes = ["C4", "D#5", "A#5", "G4",
-      "C3", "F5", "G3", "D4"
-    ];
     let counter = 0;
 
     function setup() {
-      let canvas = createCanvas(windowWidth - 10, windowHeight - 10);
+      let canvas = createCanvas(windowWidth - 50, windowHeight - 50);
       canvas.id('canvas-container');
       canvas.style('display', 'block');
       canvas.style('margin', 'auto');
       canvas.parent('canvas-container');
 
-      img = loadImage('HH_MM.jpg');
+      //img = loadImage('HH_MM.jpg');
 
       stroke(0, 50);
 
@@ -128,7 +125,6 @@
 
     function draw() {
       //background(220, 100, 50);
-      image(img, 0, 0, windowWidth - 10, windowHeight - 10)
 
       if (isRunning) {
         for (let i = 0; i < steppers.length; i++) {
@@ -157,6 +153,17 @@
             counter = 0;
           }
         }
+      } else{
+        for (let i = 0; i < height; i++){
+          stroke(noise(frameCount*0.001+i)*150+100, cos(frameCount*0.005*i)*100+50, sin(frameCount*0.002*i)*100+100);
+          line(0, i, width, i);
+        }
+        push();
+        noFill();
+        stroke(255);
+        strokeWeight(width*0.4);
+        circle(width/2, height/2, width*0.75);
+        pop();
       }
     }
 
