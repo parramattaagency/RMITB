@@ -108,11 +108,12 @@
       }
 
       clicked() {
-        let distPoint = dist(this.x, this.y, this.x + (width / 16)*0.5, this.y + (height / 8)*0.5) * 0.65
-        if (dist(mouseX, mouseY, this.x + (width / 16)*0.5, this.y + (height / 8)*0.5) < distPoint && this.oo == 0) {
+        let distX = dist(this.x + (width / 16)*0.5, this.y + (height / 8)*0.5, mouseX, mouseY)
+        let distY = dist(this.x + (width / 16)*0.5, this.y + (height / 8)*0.5, mouseX, mouseY)
+        if (distX < (width / 16)*0.5 && distY < (height / 8)*0.5 && this.oo == 0) {
           this.ooc = color(255, 100, 0);
           this.oo = 1;
-        } else if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 16) < distPoint && this.oo == 1) {
+        } else if (distX < (width / 16)*0.5 && distY < (height / 8)*0.5 && this.oo == 1) {
           this.ooc = 255;
           this.oo = 0;
         }
