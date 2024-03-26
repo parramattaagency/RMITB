@@ -108,7 +108,7 @@
       }
 
       clicked() {
-        let distPoint = dist(this.x, this.y, this.x + (width / 16)*0.5, this.y + (height / 8)*0.5)
+        let distPoint = dist(this.x, this.y, this.x + (width / 16)*0.5, this.y + (height / 8)*0.5) * 0.65
         if (dist(mouseX, mouseY, this.x + (width / 16)*0.5, this.y + (height / 8)*0.5) < distPoint && this.oo == 0) {
           this.ooc = color(255, 100, 0);
           this.oo = 1;
