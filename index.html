@@ -88,10 +88,10 @@
       }
 
       clicked() {
-        if (dist(mouseX, mouseY, this.x + width / 32, this.y + width / 32) < width / 32 & this.oo == 0) {
+        if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 32) < width / 32 && this.oo == 0) {
           this.ooc = color(255, 100, 0);
           this.oo = 1;
-        } else if (dist(mouseX, mouseY, this.x + width / 32, this.y + width / 32) < width / 32 & this.oo == 1) {
+        } else if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 32) < width / 32 && this.oo == 1) {
           this.ooc = 255;
           this.oo = 0;
         }
@@ -99,7 +99,7 @@
     }
 
 
-    let img;
+    //let img;
     let steppers = [];
     let samps = [];
     let counter = 0;
