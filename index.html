@@ -51,6 +51,8 @@
     <div class="text-center mt-3">
       <button onclick="startActivity()" id="mybutton" class="btn btn-primary mr-2">Start</button>
       <button onclick="stopActivity()" id="mybutton" class="btn btn-danger">Stop</button>
+      <button onclick="clearActivity()" id="mybutton" class="btn btn-danger">Clear</button>
+      <button onclick="exitActivity()" id="mybutton" class="btn btn-danger">Exit</button>
     </div>
     <div id="canvas-container">
       <!-- Canvas will be created here -->
@@ -59,13 +61,31 @@
 
   <script>
     let isRunning = false;
+    let isStopped = false;
+    let isExited = true;
 
     function startActivity() {
       isRunning = true;
     }
 
+    function exitActivity() {
+      isExited = true;
+      isRunning = false;
+      isStopped = false;
+      clearActivity();
+    }
+
     function stopActivity() {
       isRunning = false;
+      isStopped = true;
+      counter = 0;
+      for (let i = 0; i < steppers.length; i++) {
+        steppers[i].act = color(0, 50);
+      }
+    }
+
+
+    function clearActivity(){
       for (let i = 0; i < steppers.length; i++) {
         steppers[i].oo = 0;
         steppers[i].ooc = 255;
@@ -88,10 +108,10 @@
       }
 
       clicked() {
-        if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 32) < width / 32 && this.oo == 0) {
+        if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 16) < height / 24 && this.oo == 0) {
           this.ooc = color(255, 100, 0);
           this.oo = 1;
-        } else if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 32) < width / 32 && this.oo == 1) {
+        } else if (dist(mouseX, mouseY, this.x + width / 32, this.y + height / 16) < height / 24 && this.oo == 1) {
           this.ooc = 255;
           this.oo = 0;
         }
@@ -153,7 +173,11 @@
             counter = 0;
           }
         }
-      } else{
+      } else if (isRunning == false && isStopped == true){
+        for (let i = 0; i < steppers.length; i++) {
+          steppers[i].show();
+        }
+      } else if (isRunning == false && isStopped == false && isExited == true){
         for (let i = 0; i < height; i++){
           stroke(noise(frameCount*0.001+i)*150+100, cos(frameCount*0.005*i)*100+50, sin(frameCount*0.002*i)*100+100);
           line(0, i, width, i);
