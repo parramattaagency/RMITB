@@ -108,16 +108,17 @@
       }
 
       clicked() {
-        let distX = abs(this.x + (width / 16) * 0.5 - mouseX);
-        let distY = abs(this.y + (height / 8) * 0.5 - mouseY);
-        if (distX < (width / 16) * 0.5 && distY < (height / 8) * 0.5 && this.oo == 0) {
+        let distX = dist(this.x + (width / 16)*0.5, this.y + (height / 8)*0.5, mouseX, mouseY)
+        let distY = dist(this.x + (width / 16)*0.5, this.y + (height / 8)*0.5, mouseX, mouseY)
+        if (distX < (width / 16)*0.5 && distY < (height / 8)*0.5 && this.oo == 0) {
           this.ooc = color(255, 150, 0);
           this.oo = 1;
-        } else if (distX < (width / 16) * 0.5 && distY < (height / 8) * 0.5 && this.oo == 1) {
+        } else if (distX < (width / 16)*0.5 && distY < (height / 8)*0.5 && this.oo == 1) {
           this.ooc = 255;
           this.oo = 0;
         }
       }
+    }
 
 
     //let img;
